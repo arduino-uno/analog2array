@@ -1,9 +1,9 @@
 /*
 
-  Get the Min & Max Value of Array
+  Get the Min, Max & Avg Value of Array
 
   Reads all the analog inputs, store the result to an Array.
-  Get the Minimum & the Maximum value of Array.
+  Get the Minimum, Maximum & Average value of Array.
   Also prints the results to the Serial Monitor.
 
   The circuit:
@@ -14,8 +14,8 @@
 
 // Analog input pin that the LDR is attached to
 const int analogInPin = A1;
-//let's say you want to read up to 100 values
-const unsigned int numReadings = 6;
+// let's say you want to read up to 100 values, start from 0
+const unsigned int numReadings = 3;
 unsigned int analogVals[numReadings];
 
 void setup() {
@@ -31,11 +31,14 @@ void setup() {
       if (i>=numReadings) {
           int minValue = getMinimumValue(analogVals, numReadings);
           int maxValue = getMaximumValue(analogVals, numReadings);
+          int avgValue = getAverageValue(analogVals, numReadings);
           Serial.print("Min Value:");
           Serial.println(minValue);
           Serial.print("Max Value:");
           Serial.println(maxValue);
-          //reset to beginning of array, so you don't try to save readings outside of the bounds of the array
+          Serial.print("Avg Value:");
+          Serial.println(avgValue);
+          // reset to beginning of array, so you don't try to save readings outside of the bounds of the array
           i=0;
       }
 
@@ -44,9 +47,7 @@ void setup() {
   return;
 }
 
-void loop() {
-    /* Loop Code here */   
-}
+void loop() { /* No Loop */ }
 
 int getMinimumValue(int* array, int size){
   int minIndex = 0;
@@ -64,4 +65,15 @@ int getMaximumValue(int* array, int size){
     max = max(max, array[i]);
   }
   return max;
+}
+
+int getAverageValue(int* array, int size){
+  int maxIndex = 0;
+  int sum = array[maxIndex];
+  for (int i=0; i<size; i++){
+    sum += array[i];
+  }
+  // size plus zero, b'cos the counter is start from "0"
+  int avg = sum / (size + 1);
+  return avg;
 }
